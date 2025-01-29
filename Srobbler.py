@@ -1,9 +1,10 @@
 import json
 import time
 import requests
+import os
 
-API_KEY = "6267962a5e22a210191c11109c814dd3"
-SESSION_KEY = "xqQs8zyEAYkytO4PdabytcRr7yxmACYv"
+API_KEY = os.getenv("LASTFM_API_KEY")
+SESSION_KEY = os.getenv("LASTFM_SESSION_KEY")
 
 def scrobble_track(artist, track, timestamp):
     url = "http://ws.audioscrobbler.com/2.0/"
@@ -19,15 +20,20 @@ def scrobble_track(artist, track, timestamp):
     response = requests.post(url, data=payload)
     print(response.json())
 
-# Load Spotify listening history
-with open("StreamingHistory.json", "r") as f:
-    data = json.load(f)
+# Get the first file from the directory
+folder = "StreamingHistory"
+files = sorted(os.listdir(folder))
+if files:
+    file_to_upload = files[0]
+    with open(os.path.join(folder, file_to_upload), "r") as f:
+        data = json.load(f)
 
-# Send each track to Last.fm
-for entry in data:
-    artist = entry["artistName"]
-    track = entry["trackName"]
-    timestamp = int(time.mktime(time.strptime(entry["endTime"], "%Y-%m-%d %H:%M")))
-    scrobble_track(artist, track, timestamp)
-    time.sleep(0.5)  # Rate limiting
+    for entry in data:
+        artist = entry["artistName"]
+        track = entry["trackName"]
+        timestamp = int(time.mktime(time.strptime(entry["endTime"], "%Y-%m-%d %H:%M")))
+        scrobble_track(artist, track, timestamp)
+        time.sleep(0.5)  # Rate limiting
 
+    # Remove uploaded file
+    os.remove(os.path.join(folder, file_to_upload))
