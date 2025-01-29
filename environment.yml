@@ -1,0 +1,12 @@
+name: myenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - requests
+  - pandas
+  - numpy
+  - pip
+  - pip:
+      - spotipy  # Example: Install a package from pip
