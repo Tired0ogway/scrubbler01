@@ -3,7 +3,7 @@ import time
 import requests
 
 API_KEY = "6267962a5e22a210191c11109c814dd3"
-SESSION_KEY = "your_authenticated_session_key"
+SESSION_KEY = "xqQs8zyEAYkytO4PdabytcRr7yxmACYv"
 
 def scrobble_track(artist, track, timestamp):
     url = "http://ws.audioscrobbler.com/2.0/"
