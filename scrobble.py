@@ -32,7 +32,7 @@ if files:
     for entry in data:
         artist = entry["artistName"]
         track = entry["trackName"]
-        imestamp = int(datetime.strptime(entry["time"], "%Y-%m-%dT%H:%M:%SZ").timestamp())
+        timestamp = int(datetime.strptime(entry["time"], "%Y-%m-%dT%H:%M:%SZ").timestamp())
         scrobble_track(artist, track, timestamp)
         time.sleep(0.5)  # Rate limiting
 
